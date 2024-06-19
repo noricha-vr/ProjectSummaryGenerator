@@ -1,6 +1,6 @@
 # Project Summary Generator
 
-Project Summary Generatorは、指定されたディレクトリ内のファイルをマークダウン形式でまとめるPythonスクリプトです。プロジェクトのドキュメンテーションを容易に生成することができます。
+Project Summary Generatorは、指定されたディレクトリ内のファイルをマークダウン形式でまとめるPythonスクリプトです。プロジェクトを1つのファイルにまとめて生成AIに質問するときに利用します。
 
 ## 機能
 
@@ -12,7 +12,7 @@ Project Summary Generatorは、指定されたディレクトリ内のファイ�
 
 ## 使用方法
 
-1. `main.py`を実行してGUIを起動します。
+1. `gui.py`を実行してGUIを起動します。
 2. "Root Directory"の"Browse"ボタンをクリックし、サマリーを生成するプロジェクトのルートディレクトリを選択します。
 3. "Exclude Directories"に、除外するディレクトリ名をカンマ区切りで入力します。（例: `venv, __pycache__, node_modules`）
 4. "Include Extensions"に、含めるファイル拡張子をカンマ区切りで入力します。（例: `.md, .html, .css, .txt, .json, .yml, .yaml, .py, .ts, .js`）
@@ -28,21 +28,22 @@ Project Summary Generatorは、指定されたディレクトリ内のファイ�
 
 ## インストール方法
 
-1. このリポジトリをクローンまたはダウンロードします。
-2. ターミナルで以下のコマンドを実行し、必要なライブラリをインストールします。
+1. 以下のコマンドを実行して、GitHubからこのリポジトリをクローンします。
 
    ```
+   git clone https://github.com/noricha-vr/ProjectSummaryGenerator.git
+   ```
 
-   pip install -r requirements.txt
+2. クローンしたディレクトリに移動します。
 
+   ```
+   cd ProjectSummaryGenerator
    ```
 
 3. `gui.py`を実行してGUIを起動します。
 
    ```
-
    python gui.py
-
    ```
 
 ## ライセンス
