@@ -2,6 +2,8 @@
 
 Project Summary Generatorは、指定されたディレクトリ内のファイルをマークダウン形式でまとめるPythonスクリプトです。プロジェクトを1つのファイルにまとめて生成AIに質問するときに利用します。
 
+![Project Summary Generator Screenshot](image/screenshot.png)
+
 ## 機能
 
 - 指定したディレクトリ内のファイルをマークダウン形式で出力
