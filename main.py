@@ -1,5 +1,6 @@
 import os
 import subprocess
+import fnmatch
 
 
 def generate_summary(root_dir: str, exclude_dirs: list[str], include_extensions: list[str], output_file: str,
@@ -15,31 +16,37 @@ def generate_summary(root_dir: str, exclude_dirs: list[str], include_extensions:
         output_dir: 出力フォルダ
         target_files: 取得対象のファイル名リスト
     """
+
+    exclude_files = [
+        "*.pyc", "*.pyo", "__pycache__", ".DS_Store", "Thumbs.db",
+        "*.swp", "*.swo", "*~", ".vscode", ".idea",
+        "build", "dist", "*.egg-info", "*.log", "*.bak",
+        ".cache", "venv", "env", ".env", "node_modules",
+        ".git", ".svn", ".hg", "local_settings.py",
+        "*.pem", "*.key", "*.sqlite3", "*.db",
+        "*.min.js", "*.min.css"
+    ]
+
     # ディレクトリ構造を tree コマンドで取得
+    exclude_pattern = "|".join(exclude_dirs + ["__pycache__", "*.pyc"])
     tree_output = subprocess.check_output(
-        ["tree", "-N", "-I", "__pycache__|*.pyc", root_dir], encoding='utf-8')
+        ["tree", "-N", "-I", exclude_pattern, root_dir], encoding='utf-8')
 
     # ファイル情報を取得
     file_paths = []
-    for root, _, files in os.walk(root_dir):
+    for root, dirs, files in os.walk(root_dir):
+        # 除外ディレクトリをリストから削除
+        dirs[:] = [d for d in dirs if d not in exclude_dirs]
+
         for file in files:
             file_path = os.path.join(root, file)
 
-            # 除外ディレクトリのチェック
-            if any(dir in root for dir in exclude_dirs):
+            # 除外ファイルのチェック
+            if any(fnmatch.fnmatch(file, pattern) for pattern in exclude_files):
                 continue
 
-            # .pycファイルの除外
-            if file.endswith(".pyc"):
-                continue
-
-            # 拡張子のチェック
-            if any(file.endswith(ext) for ext in include_extensions):
-                file_paths.append(file_path)
-                continue
-
-            # ターゲットファイルのチェック
-            if file in target_files:
+            # 拡張子のチェックまたはターゲットファイルのチェック
+            if any(file.endswith(ext) for ext in include_extensions) or file in target_files:
                 file_paths.append(file_path)
 
     # マークダウン形式で出力
