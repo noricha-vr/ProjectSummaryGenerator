@@ -17,7 +17,7 @@ def generate_summary(root_dir: str, exclude_dirs: list[str], include_extensions:
     """
     # ディレクトリ構造を tree コマンドで取得
     tree_output = subprocess.check_output(
-        ["tree", "-I", "__pycache__|*.pyc", root_dir]).decode('utf-8')
+        ["tree", "-N", "-I", "__pycache__|*.pyc", root_dir], encoding='utf-8')
 
     # ファイル情報を取得
     file_paths = []
