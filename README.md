@@ -41,23 +41,15 @@ git clone https://github.com/noricha-vr/ProjectSummaryGenerator.git
 
 2. クローンしたディレクトリに移動します：
 
-   ```
-   cd ProjectSummaryGenerator
-   ```
+```
+cd ProjectSummaryGenerator
+```
 
-3. 必要に応じて、仮想環境を作成しアクティベートします。
+3. `gui.py` を実行してGUIを起動します：
 
-4. 必要なパッケージをインストールします：
-
-   ```
-   pip install -r requirements.txt
-   ```
-
-5. `gui.py` を実行してGUIを起動します：
-
-   ```
-   python gui.py
-   ```
+```
+python gui.py
+```
 
 ## 設定
 
