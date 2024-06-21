@@ -31,24 +31,27 @@ def generate_summary(root_dir: str, exclude_dirs: list[str], include_extensions:
     exclude_pattern = "|".join(exclude_dirs + ["__pycache__", "*.pyc"])
     tree_output = subprocess.check_output(
         ["tree", "-N", "-I", exclude_pattern, root_dir], encoding='utf-8')
-
     # ファイル情報を取得
     file_paths = []
     for root, dirs, files in os.walk(root_dir):
         # 除外ディレクトリをリストから削除
         dirs[:] = [d for d in dirs if d not in exclude_dirs]
 
+        print(f"Root: {root}")
+        print(f"Dirs: {dirs}")
+
         for file in files:
             file_path = os.path.join(root, file)
 
             # 除外ファイルのチェック
             if any(fnmatch.fnmatch(file, pattern) for pattern in exclude_files):
+                print(f"Excluded: {file_path}")
                 continue
 
             # 拡張子のチェックまたはターゲットファイルのチェック
             if any(file.endswith(ext) for ext in include_extensions) or file in target_files:
                 file_paths.append(file_path)
-
+    print(f'Selected files: {file_paths}')
     # マークダウン形式で出力
     output_content = f"""
 ## ディレクトリ構造
@@ -79,12 +82,12 @@ def generate_summary(root_dir: str, exclude_dirs: list[str], include_extensions:
 
 
 if __name__ == "__main__":
-    root_dir = "~/project/noricha/Summarizer"  # ルートディレクトリを指定
-    exclude_dirs = ["venv", ".git"]  # 除外するディレクトリ
+    root_dir = "./"  # ルートディレクトリを指定
+    exclude_dirs = [".venv", ".git"]  # 除外するディレクトリ
     include_extensions = [".md", ".yaml", ".yml",
                           ".txt", ".py", ".html"]  # 含めるファイル拡張子
     output_file = "summary.md"
-    output_dir = "/Users/main/Desktop"  # 出力フォルダを指定
+    output_dir = "~/Desktop"  # 出力フォルダを指定
     target_files = ["README.md", "requirements.txt",
                     "config.yaml", "Dockerfile"]  # 取得対象のファイル名を指定
     generate_summary(root_dir, exclude_dirs, include_extensions,
