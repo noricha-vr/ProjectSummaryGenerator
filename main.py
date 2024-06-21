@@ -30,7 +30,7 @@ def generate_summary(root_dir: str, exclude_dirs: list[str], include_extensions:
     # ディレクトリ構造を tree コマンドで取得
     exclude_pattern = "|".join(exclude_dirs + ["__pycache__", "*.pyc"])
     tree_output = subprocess.check_output(
-        ["tree", "-N", "-I", exclude_pattern, root_dir], encoding='utf-8')
+        ["tree", "-N", "-L", "4", "-I", exclude_pattern, root_dir], encoding='utf-8')
     # ファイル情報を取得
     file_paths = []
     for root, dirs, files in os.walk(root_dir):
