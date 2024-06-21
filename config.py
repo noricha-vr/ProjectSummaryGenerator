@@ -24,7 +24,7 @@ EXCLUDE_DIRS = [
 DEFAULT_OUTPUT_FILENAME = "summary.md"
 
 # デフォルトのターゲットファイル
-DEFAULT_TARGET_FILES = ["Dockerfile"]
+DEFAULT_TARGET_FILES = ["Dockerfile","docker-compose.yml", "Makefile", "Jenkinsfile", "Jenkinsfile.*"]
 
 # サポートするファイル拡張子
 SUPPORTED_EXTENSIONS = [
