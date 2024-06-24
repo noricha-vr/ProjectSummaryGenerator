@@ -17,14 +17,15 @@ EXCLUDE_DIRS = [
     # フレームワーク固有
     ".serverless", ".terraform", ".stack-work", ".next", ".nuxt",
     # その他
-    ".DS_Store", "migrations", ".gradle","locale",
+    ".DS_Store", "migrations", ".gradle","locale","*secret*",
 ]
 
 # デフォルトの出力ファイル名
 DEFAULT_OUTPUT_FILENAME = "summary.md"
 
 # デフォルトのターゲットファイル
-DEFAULT_TARGET_FILES = ["README.md","Dockerfile","docker-compose.yml","requirements.txt", "Makefile", "Jenkinsfile", "Jenkinsfile.*"]
+
+DEFAULT_TARGET_FILES = ["README.md","Dockerfile","docker-compose.yml","requirements.txt","package.json","svelte.config.js","tsconfig.json","*.config.ts" ]
 
 # サポートするファイル拡張子
 SUPPORTED_EXTENSIONS = [
