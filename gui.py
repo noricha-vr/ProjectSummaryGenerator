@@ -30,18 +30,19 @@ def main():
     def load_preset(directory):
         preset_data = preset_manager.load_preset(directory)
         if preset_data:
-            exclude_dirs.set(preset_data.get('exclude_dirs', ''))
-            output_dir.set(preset_data.get('output_dir', DEFAULT_OUTPUT_DIR))
-            target_files.set(preset_data.get('target_files', ''))
+            exclude_dirs.set(preset_data.get('exclude_dirs', exclude_dirs.get()))
+            output_dir.set(preset_data.get('output_dir', output_dir.get()))
+            target_files.set(preset_data.get('target_files', target_files.get()))
+            preset_extensions = preset_data.get('include_extensions', [])
             for ext, var in extension_vars.items():
-                var.set(ext in preset_data.get('include_extensions', []))
+                var.set(ext in preset_extensions)
 
     root_dir = tk.StringVar()
     exclude_dirs = tk.StringVar(value=", ".join(EXCLUDE_DIRS))
     output_dir = tk.StringVar(value=DEFAULT_OUTPUT_DIR)
     target_files = tk.StringVar(value=", ".join(DEFAULT_TARGET_FILES))
 
-    extension_vars = {ext: tk.BooleanVar(value=False) for ext in SUPPORTED_EXTENSIONS}
+    extension_vars = {ext: tk.BooleanVar(value=ext in [".py"]) for ext in SUPPORTED_EXTENSIONS}
 
     ttk.Label(window, text="ルートディレクトリ:").grid(row=0, column=0, sticky=tk.W, padx=10, pady=5)
     ttk.Entry(window, textvariable=root_dir, width=50, state="readonly").grid(row=0, column=1, padx=10, pady=5)
