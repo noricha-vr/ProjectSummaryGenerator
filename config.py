@@ -32,7 +32,7 @@ SUPPORTED_EXTENSIONS = [
     ".py", ".ts", ".js", ".java", ".cpp", ".c", ".h", ".hpp",
     ".rb", ".php", ".go", ".rs", ".swift", ".kt", ".scala",
     ".sql", ".sh", ".bat", ".ps1", ".xml", ".csv", ".ini",
-    ".conf", ".toml", ".jsx", ".tsx", ".vue", ".sass", ".scss"
+    ".conf", ".toml", ".jsx", ".tsx", ".vue",".svelte", ".sass", ".scss"
 ]
 
 # デフォルトの出力ディレクトリ

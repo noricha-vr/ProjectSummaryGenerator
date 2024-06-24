@@ -80,12 +80,7 @@ def main():
                 output_dir.get(),
                 [file.strip() for file in target_files.get().split(",")]
             )
-
-            result = messagebox.askquestion("成功",
-                                            f"サマリーが正常に生成されました。\n\n出力先: {output_path}\n\n出力ディレクトリを開きますか？",
-                                            icon='info')
-            if result == 'yes':
-                open_output_directory(output_dir.get())
+            open_output_directory(output_dir.get())
         except Exception as e:
             messagebox.showerror("エラー", f"サマリーの生成中にエラーが発生しました：\n{str(e)}")
 
