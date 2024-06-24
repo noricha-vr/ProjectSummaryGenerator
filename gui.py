@@ -1,9 +1,8 @@
-import tkinter.messagebox as messagebox
+import tkinter as tk
+from tkinter import filedialog, ttk, messagebox
 import os
 import subprocess
-import tkinter as tk
-from tkinter import filedialog, ttk
-
+from preset_manager import PresetManager
 from config import (
     EXCLUDE_DIRS, DEFAULT_TARGET_FILES,
     SUPPORTED_EXTENSIONS, DEFAULT_OUTPUT_DIR
@@ -13,17 +12,29 @@ from main import generate_summary
 def main():
     window = tk.Tk()
     window.title("Project Summary Generator")
-    window.geometry("820x400")  # ウィンドウサイズを少し小さくしました
+    window.geometry("820x450")
+
+    preset_manager = PresetManager()
 
     def pick_root_dir():
         result = filedialog.askdirectory()
         if result:
             root_dir.set(result)
+            load_preset(result)
 
     def pick_output_dir():
         result = filedialog.askdirectory()
         if result:
             output_dir.set(result)
+
+    def load_preset(directory):
+        preset_data = preset_manager.load_preset(directory)
+        if preset_data:
+            exclude_dirs.set(preset_data.get('exclude_dirs', ''))
+            output_dir.set(preset_data.get('output_dir', DEFAULT_OUTPUT_DIR))
+            target_files.set(preset_data.get('target_files', ''))
+            for ext, var in extension_vars.items():
+                var.set(ext in preset_data.get('include_extensions', []))
 
     root_dir = tk.StringVar()
     exclude_dirs = tk.StringVar(value=", ".join(EXCLUDE_DIRS))
@@ -62,9 +73,21 @@ def main():
             messagebox.showerror("エラー", f"ディレクトリが見つかりません：\n{path}")
 
     def generate_summary_callback():
+        if not root_dir.get():
+            messagebox.showerror("エラー", "ルートディレクトリを選択してください。")
+            return
+
         selected_extensions = [ext for ext, var in extension_vars.items() if var.get()]
         output_filename = os.path.basename(root_dir.get()) + ".md"
-        output_path = os.path.join(output_dir.get(), output_filename)
+
+        # プリセットの保存
+        preset_data = {
+            'exclude_dirs': exclude_dirs.get(),
+            'include_extensions': selected_extensions,
+            'output_dir': output_dir.get(),
+            'target_files': target_files.get()
+        }
+        preset_manager.save_preset(root_dir.get(), preset_data)
 
         try:
             generate_summary(
@@ -75,6 +98,7 @@ def main():
                 output_dir.get(),
                 [file.strip() for file in target_files.get().split(",")]
             )
+            messagebox.showinfo("成功", f"サマリーが生成されました。\n保存先: {os.path.join(output_dir.get(), output_filename)}")
             open_output_directory(output_dir.get())
         except Exception as e:
             messagebox.showerror("エラー", f"サマリーの生成中にエラーが発生しました：\n{str(e)}")
