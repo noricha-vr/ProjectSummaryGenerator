@@ -17,13 +17,15 @@ def main():
     preset_manager = PresetManager()
 
     def pick_root_dir():
-        result = filedialog.askdirectory()
+        initial_dir = os.path.expanduser("~")  # ユーザーのホームディレクトリを取得
+        result = filedialog.askdirectory(initialdir=initial_dir)
         if result:
             root_dir.set(result)
             load_preset(result)
 
     def pick_output_dir():
-        result = filedialog.askdirectory()
+        initial_dir = os.path.expanduser("~")  # ユーザーのホームディレクトリを取得
+        result = filedialog.askdirectory(initialdir=initial_dir)
         if result:
             output_dir.set(result)
 
@@ -42,7 +44,7 @@ def main():
     output_dir = tk.StringVar(value=DEFAULT_OUTPUT_DIR)
     target_files = tk.StringVar(value=", ".join(DEFAULT_TARGET_FILES))
 
-    extension_vars = {ext: tk.BooleanVar(value=ext in [".py"]) for ext in SUPPORTED_EXTENSIONS}
+    extension_vars = {ext: tk.BooleanVar(value=ext in [".md", ".py"]) for ext in SUPPORTED_EXTENSIONS}
 
     ttk.Label(window, text="ルートディレクトリ:").grid(row=0, column=0, sticky=tk.W, padx=10, pady=5)
     ttk.Entry(window, textvariable=root_dir, width=50, state="readonly").grid(row=0, column=1, padx=10, pady=5)
